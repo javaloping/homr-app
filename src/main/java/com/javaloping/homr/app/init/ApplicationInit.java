@@ -16,6 +16,7 @@ public class ApplicationInit implements WebApplicationInitializer {
 
     private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
 
+    @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         final AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
 
