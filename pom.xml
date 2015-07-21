@@ -35,6 +35,8 @@
         <spring.version>4.1.7.RELEASE</spring.version>
         <log4j.version>2.1</log4j.version>
         <jetty.version>9.0.5.v20130815</jetty.version>
+        <spring.jpa.version>1.8.1.RELEASE</spring.jpa.version>
+        <hibernate.version>4.3.6.Final</hibernate.version>
     </properties>
 
     <build>
@@ -72,6 +74,30 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.3.6.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.25</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring.jpa.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-asm</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
