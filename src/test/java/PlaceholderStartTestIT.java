@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = { TestApp.class})
-public class PlaceholderStartTest {
+public class PlaceholderStartTestIT {
 
     @Autowired
     private WebApplicationContext wac;
