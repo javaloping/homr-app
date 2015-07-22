@@ -32,7 +32,7 @@ public abstract class Property {
     private BigDecimal price;
 
     @Embedded
-    private Features features;
+    private Features features = new Features();
 
     private PropertyType type;
 
