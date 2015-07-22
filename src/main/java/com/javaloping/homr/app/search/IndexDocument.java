@@ -3,7 +3,7 @@ package com.javaloping.homr.app.search;
 import java.util.Map;
 
 /**
- * Created by victor on 22/07/15.
+ * @author victormiranda@gmail.com
  */
 public interface IndexDocument {
 

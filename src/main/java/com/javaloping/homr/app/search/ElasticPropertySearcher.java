@@ -30,8 +30,8 @@ public class ElasticPropertySearcher implements PropertySearcher {
 
     private static final Logger LOG = LogManager.getLogger(ElasticPropertySearcher.class.getName());
 
-    public ElasticPropertySearcher(final ElasticConfig elasticConfig) {
-        this.elasticConfig = elasticConfig;
+    public ElasticPropertySearcher(final ElasticConfig config) {
+        elasticConfig = config;
 
         client = getClient();
 
@@ -50,7 +50,7 @@ public class ElasticPropertySearcher implements PropertySearcher {
 
     @Override
     public PropertyDocument index(Property property) throws IOException {
-        final PropertyDocument propertyDocument = getDocument(property);
+        final PropertyDocument propertyDocument = PropertyDocument.fromProperty(property);
 
         final String idString = String.valueOf(propertyDocument.getId());
 
@@ -78,19 +78,6 @@ public class ElasticPropertySearcher implements PropertySearcher {
         return PropertyDocument.fromHit(hit);
     }
 
-    private PropertyDocument getDocument(final Property property) {
-        final PropertyDocument document = new PropertyDocument();
-
-        document.setId(property.getId());
-        document.setName(property.getName());
-        document.setBedrooms(property.getFeatures().getBedrooms());
-        document.setBathroom(property.getFeatures().getBathrooms());
-        document.setFloor(property.getFeatures().getFloor());
-        document.setSqMeters(property.getFeatures().getSqMeters());
-        document.setPrice(property.getPrice().doubleValue());
-
-        return document;
-    }
 
     @Override
     public List<PropertyDocument> search(PropertyDocument searchDocument) {
@@ -103,14 +90,8 @@ public class ElasticPropertySearcher implements PropertySearcher {
     }
 
     private Client getClient() {
-        final Client elasticClient;
-
-        if (!elasticConfig.isStandalone()) {
-            elasticClient = NodeBuilder.nodeBuilder().local(true).node().client();
-        } else {
-            elasticClient = new TransportClient()
+        final Client elasticClient = new TransportClient()
                     .addTransportAddress(new InetSocketTransportAddress(elasticConfig.getHost(), elasticConfig.getPort()));
-        }
 
         return elasticClient;
     }

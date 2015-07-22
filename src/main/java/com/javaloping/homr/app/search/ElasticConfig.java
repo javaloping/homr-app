@@ -5,7 +5,6 @@ package com.javaloping.homr.app.search;
  */
 public class ElasticConfig {
     private int port;
-    private boolean standalone;
     private String host;
     private String indexName;
     private String objectName;
@@ -16,14 +15,6 @@ public class ElasticConfig {
 
     public void setPort(int port) {
         this.port = port;
-    }
-
-    public boolean isStandalone() {
-        return standalone;
-    }
-
-    public void setStandalone(boolean standalone) {
-        this.standalone = standalone;
     }
 
     public String getHost() {

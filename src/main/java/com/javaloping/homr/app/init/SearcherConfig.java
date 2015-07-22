@@ -23,9 +23,6 @@ public class SearcherConfig {
     @Value("${search.host}")
     private String host;
 
-    @Value("${search.standalone}")
-    private Boolean standalone;
-
     @Value("${search.port}")
     private Integer port;
 
@@ -40,7 +37,6 @@ public class SearcherConfig {
         elasticConfig.setHost(host);
         elasticConfig.setPort(port);
         elasticConfig.setObjectName(propertyName);
-        elasticConfig.setStandalone(standalone);
         elasticConfig.setIndexName(indexName);
 
         return elasticConfig;

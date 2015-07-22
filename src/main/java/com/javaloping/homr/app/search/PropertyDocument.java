@@ -1,5 +1,6 @@
 package com.javaloping.homr.app.search;
 
+import com.javaloping.homr.app.model.Property;
 import com.javaloping.homr.app.type.PropertyModeType;
 import com.javaloping.homr.app.type.PropertyType;
 import org.elasticsearch.common.xcontent.XContentBuilder;
@@ -170,6 +171,23 @@ public class PropertyDocument implements IndexDocument {
                 .field("type", getType())
                 .field("publishedDate", getPublishedDate())
                 .endObject();
+    }
+
+    public static PropertyDocument fromProperty(final Property property) {
+        final PropertyDocument document = new PropertyDocument();
+
+        document.setId(property.getId());
+        document.setName(property.getName());
+        document.setBedrooms(property.getFeatures().getBedrooms());
+        document.setBathroom(property.getFeatures().getBathrooms());
+        document.setFloor(property.getFeatures().getFloor());
+        document.setSqMeters(property.getFeatures().getSqMeters());
+
+        if (property.getPrice() != null) {
+            document.setPrice(property.getPrice().doubleValue());
+        }
+
+        return document;
     }
 
     public static PropertyDocument fromHit(SearchHit hit) {
