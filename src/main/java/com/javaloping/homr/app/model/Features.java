@@ -37,7 +37,7 @@ public class Features {
         this.sqMeters = sqMeters;
     }
 
-    public Boolean isLift() {
+    public Boolean getLift() {
         return lift;
     }
 

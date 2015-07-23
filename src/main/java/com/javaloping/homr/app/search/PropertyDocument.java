@@ -4,7 +4,6 @@ import com.javaloping.homr.app.model.Property;
 import com.javaloping.homr.app.type.PropertyModeType;
 import com.javaloping.homr.app.type.PropertyType;
 import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.search.SearchHit;
 
 import java.io.IOException;
 import java.util.Date;
@@ -13,6 +12,9 @@ import java.util.Map;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 /**
+ * Property Documents to be indexed.
+ * They are flattened.
+ *
  * @author victormiranda@gmail.com
  */
 public class PropertyDocument implements IndexDocument {
@@ -23,7 +25,7 @@ public class PropertyDocument implements IndexDocument {
     private Boolean lift;
     private Integer floor;
     private int bedrooms;
-    private int bathroom;
+    private int bathrooms;
     private Float sqMeters;
     private Integer areaId;
     private Float longitude;
@@ -57,7 +59,7 @@ public class PropertyDocument implements IndexDocument {
         this.name = name;
     }
 
-    public Boolean isLift() {
+    public Boolean getLift() {
         return lift;
     }
 
@@ -81,12 +83,12 @@ public class PropertyDocument implements IndexDocument {
         this.bedrooms = bedrooms;
     }
 
-    public int getBathroom() {
-        return bathroom;
+    public int getBathrooms() {
+        return bathrooms;
     }
 
-    public void setBathroom(int bathroom) {
-        this.bathroom = bathroom;
+    public void setBathrooms(int bathrooms) {
+        this.bathrooms = bathrooms;
     }
 
     public Float getSqMeters() {
@@ -158,10 +160,10 @@ public class PropertyDocument implements IndexDocument {
                 .field("id", getId())
                 .field("name", getName())
                 .field("mode", getMode())
-                .field("lift", isLift())
+                .field("lift", getLift())
                 .field("floor", getFloor())
                 .field("bedrooms", getBedrooms())
-                .field("bathrooms", getBathroom())
+                .field("bathrooms", getBathrooms())
                 .field("sqMeters", getSqMeters())
                 .field("areaId", getAreaId())
                 .field("longitude", getLongitude())
@@ -178,10 +180,12 @@ public class PropertyDocument implements IndexDocument {
 
         document.setId(property.getId());
         document.setName(property.getName());
+        document.setLift(property.getFeatures().getLift());
         document.setBedrooms(property.getFeatures().getBedrooms());
-        document.setBathroom(property.getFeatures().getBathrooms());
+        document.setBathrooms(property.getFeatures().getBathrooms());
         document.setFloor(property.getFeatures().getFloor());
         document.setSqMeters(property.getFeatures().getSqMeters());
+        document.setPublishedDate(property.getPublishedDate());
 
         if (property.getPrice() != null) {
             document.setPrice(property.getPrice().doubleValue());
@@ -190,17 +194,21 @@ public class PropertyDocument implements IndexDocument {
         return document;
     }
 
-    public static PropertyDocument fromHit(SearchHit hit) {
-        final Map<String, Object> source = hit.getSource();
 
+    public static PropertyDocument fromSource(Map<String, Object> source) {
         final PropertyDocument document = new PropertyDocument();
 
         document.setId((Integer) source.get("id"));
 
         document.setName(IndexDocument.getStringProperty(source, "name"));
         document.setFloor(IndexDocument.getIntegerProperty(source, "floor"));
+        document.setLift(IndexDocument.getBooleanProperty(source, "lift"));
         document.setBedrooms(IndexDocument.getIntegerProperty(source, "bedrooms"));
-        document.setBathroom(IndexDocument.getIntegerProperty(source, "bathrooms"));
+        document.setBathrooms(IndexDocument.getIntegerProperty(source, "bathrooms"));
+        document.setSqMeters(IndexDocument.getFloatProperty(source, "sqMeters"));
+
+        document.setPublishedDate(IndexDocument.getDateProperty(source, "publishedDate"));
+
         document.setAreaId(IndexDocument.getIntegerProperty(source, "areaId"));
 
         document.setLongitude(IndexDocument.getFloatProperty(source, "longitude"));
@@ -216,5 +224,55 @@ public class PropertyDocument implements IndexDocument {
         return document;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
 
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        PropertyDocument document = (PropertyDocument) o;
+
+        return new org.apache.commons.lang3.builder.EqualsBuilder()
+                .append(bedrooms, document.bedrooms)
+                .append(bathrooms, document.bathrooms)
+                .append(id, document.id)
+                .append(mode, document.mode)
+                .append(name, document.name)
+                .append(lift, document.lift)
+                .append(floor, document.floor)
+                .append(sqMeters, document.sqMeters)
+                .append(areaId, document.areaId)
+                .append(longitude, document.longitude)
+                .append(latitude, document.latitude)
+                .append(price, document.price)
+                .append(rentPrice, document.rentPrice)
+                .append(type, document.type)
+                .append(publishedDate, document.publishedDate)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new org.apache.commons.lang3.builder.HashCodeBuilder(17, 37)
+                .append(id)
+                .append(mode)
+                .append(name)
+                .append(lift)
+                .append(floor)
+                .append(bedrooms)
+                .append(bathrooms)
+                .append(sqMeters)
+                .append(areaId)
+                .append(longitude)
+                .append(latitude)
+                .append(price)
+                .append(rentPrice)
+                .append(type)
+                .append(publishedDate)
+                .toHashCode();
+    }
 }

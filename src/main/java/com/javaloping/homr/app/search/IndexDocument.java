@@ -1,5 +1,6 @@
 package com.javaloping.homr.app.search;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -31,6 +32,21 @@ public interface IndexDocument {
     static Float getFloatProperty(Map<String, Object> map, String property) {
         if (map.containsKey(property)) {
             return (Float) map.get(property);
+        }
+        return null;
+    }
+
+    static Boolean getBooleanProperty(Map<String, Object> map, String property) {
+        Boolean res = null;
+        if (map.containsKey(property)) {
+            res = (Boolean) map.get(property);
+        }
+        return res;
+    }
+
+    static Date getDateProperty(Map<String, Object> map, String property) {
+        if (map.containsKey(property)) {
+            return (Date) map.get(property);
         }
         return null;
     }

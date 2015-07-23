@@ -4,6 +4,7 @@ import com.javaloping.homr.app.model.Property;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
@@ -11,7 +12,6 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.node.NodeBuilder;
 import org.elasticsearch.search.SearchHit;
 
 import java.io.IOException;
@@ -35,8 +35,18 @@ public class ElasticPropertySearcher implements PropertySearcher {
 
         client = getClient();
 
-        if (!isIndexExist()) {
-            createIndex();
+        //on dev phase, it will change to a property
+        if (isIndexExist()) {
+            deleteIndex();
+        }
+
+        createIndex();
+    }
+
+    private void deleteIndex() {
+        if (isIndexExist()) {
+            LOG.debug("deleting index " + elasticConfig.getIndexName());
+            client.admin().indices().delete(new DeleteIndexRequest(elasticConfig.getIndexName())).actionGet();
         }
     }
 
@@ -75,7 +85,7 @@ public class ElasticPropertySearcher implements PropertySearcher {
 
         SearchHit hit = search.getHits().getAt(0);
 
-        return PropertyDocument.fromHit(hit);
+        return PropertyDocument.fromSource(hit.getSource());
     }
 
 
@@ -90,10 +100,8 @@ public class ElasticPropertySearcher implements PropertySearcher {
     }
 
     private Client getClient() {
-        final Client elasticClient = new TransportClient()
-                    .addTransportAddress(new InetSocketTransportAddress(elasticConfig.getHost(), elasticConfig.getPort()));
-
-        return elasticClient;
+        return new TransportClient()
+                .addTransportAddress(new InetSocketTransportAddress(elasticConfig.getHost(), elasticConfig.getPort()));
     }
 
     private void createIndex() {

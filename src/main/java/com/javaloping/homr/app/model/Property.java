@@ -4,6 +4,7 @@ import com.javaloping.homr.app.type.PropertyType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author victormiranda@gmail.com
@@ -23,6 +24,8 @@ public abstract class Property {
     private String name;
 
     private String description;
+
+    private Date publishedDate;
 
     @ManyToOne
     @JoinColumn(name = "addressId")
@@ -71,6 +74,14 @@ public abstract class Property {
         this.description = description;
     }
 
+    public Date getPublishedDate() {
+        return publishedDate;
+    }
+
+    public void setPublishedDate(Date publishedDate) {
+        this.publishedDate = publishedDate;
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -110,4 +121,5 @@ public abstract class Property {
     public void setEntityModification(EntityModification entityModification) {
         this.entityModification = entityModification;
     }
+
 }

@@ -1,6 +1,9 @@
+package com.javaloping.homr.app.test.search;
+
 import com.javaloping.homr.app.model.Property;
 import com.javaloping.homr.app.model.RentProperty;
 import com.javaloping.homr.app.search.PropertySearcher;
+import com.javaloping.homr.app.test.TestApp;
 import com.javaloping.homr.app.type.PropertyType;
 import org.junit.Test;
 import org.junit.runner.RunWith;

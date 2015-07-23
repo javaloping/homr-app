@@ -7,6 +7,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author victormiranda@gmail.com
@@ -24,18 +27,43 @@ public class PropertyDocumentTest {
         Assert.assertEquals(document.getPrice(), property.getPrice().doubleValue());
 
         Assert.assertEquals(document.getFloor(), property.getFeatures().getFloor());
-        Assert.assertEquals(document.isLift(), property.getFeatures().isLift());
+        Assert.assertEquals(document.getLift(), property.getFeatures().getLift());
         Assert.assertEquals(document.getBedrooms(), property.getFeatures().getBedrooms());
-        Assert.assertEquals(document.getBathroom(), property.getFeatures().getBathrooms());
+        Assert.assertEquals(document.getBathrooms(), property.getFeatures().getBathrooms());
         Assert.assertEquals(document.getSqMeters(), property.getFeatures().getSqMeters());
-        Assert.assertEquals(document.getSqMeters(), property.getFeatures().getSqMeters());
-        Assert.assertEquals(document.getLongitude(), property.getAddress().getLongitude());
-        Assert.assertEquals(document.getLatitude(), property.getAddress().getLatitude());
+
+        Address propertyAddress = property.getAddress();
+
+        if (propertyAddress != null) {
+            Assert.assertEquals(document.getLongitude(), property.getAddress().getLongitude());
+            Assert.assertEquals(document.getLatitude(), property.getAddress().getLatitude());
+        }
+
     }
 
     @Test
     public void testUnconversion() throws IOException {
         final Property property = getTestProperty();
+        final PropertyDocument document = PropertyDocument.fromProperty(property);
+
+        final Map<String, Object> map = new HashMap<>();
+
+        map.put("id", document.getId());
+        map.put("name", document.getName());
+        map.put("price", document.getPrice().doubleValue());
+        map.put("floor", document.getFloor());
+        map.put("bedrooms", document.getFloor());
+        map.put("bathrooms", document.getBathrooms());
+        map.put("lift", document.getLift());
+        map.put("sqMeters", document.getSqMeters());
+        map.put("areaId", document.getAreaId());
+        map.put("latitude", document.getLatitude());
+        map.put("latitude", document.getLatitude());
+        map.put("publishedDate", document.getPublishedDate());
+
+        final PropertyDocument unconvertedDocument = PropertyDocument.fromSource(map);
+
+        Assert.assertTrue(document.equals(unconvertedDocument));
     }
 
     private Property getTestProperty() {
@@ -45,17 +73,20 @@ public class PropertyDocumentTest {
         property.setName("Fabolous");
 
         property.setPrice(BigDecimal.valueOf(34232));
+        property.setPublishedDate(new Date());
 
         Features features = new Features();
         features.setBathrooms(1);
         features.setBedrooms(2);
         features.setFloor(2);
-        features.setLift(true);
+        features.setLift(false);
         features.setSqMeters(55f);
 
         property.setFeatures(features);
 
         Address address = new Address();
+        address.setLatitude(234234l);
+        address.setLongitude(5345345l);
         Area area = new Area();
         area.setId(45);
         address.setArea(area);
