@@ -31,6 +31,7 @@
 
     <properties>
         <spring.version>4.1.7.RELEASE</spring.version>
+        <spring.security.version>3.2.8.RELEASE</spring.security.version>
         <log4j.version>2.1</log4j.version>
         <jetty.version>9.0.5.v20130815</jetty.version>
         <spring.jpa.version>1.8.1.RELEASE</spring.jpa.version>
@@ -176,6 +177,18 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
         </dependency>
 
         <dependency>
