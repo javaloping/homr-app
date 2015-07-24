@@ -2,12 +2,15 @@ package com.javaloping.homr.app.controller;
 
 import com.javaloping.homr.app.dto.user.UserDTO;
 import com.javaloping.homr.app.security.AuthenticationToken;
+import com.javaloping.homr.app.security.TokenUtil;
+import com.javaloping.homr.app.security.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.authentication.UserCredentials;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,12 +26,10 @@ public class LoginController extends BaseController {
     private AuthenticationManager authenticationManager;
 
     @RequestMapping(name = "/login")
-    public AuthenticationToken login(@RequestParam UserDTO user) {
-
-        final UserCredentials credentials = new UserCredentials(user.getUsername(), user.getPassword());
+    public UserLogin login(@RequestBody UserLogin userLogin) {
 
         final UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(user.getUsername(), credentials);
+                new UsernamePasswordAuthenticationToken(userLogin.getUsername(), userLogin.getPassword());
 
         Authentication authentication = null;
 
@@ -36,7 +37,10 @@ public class LoginController extends BaseController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return new AuthenticationToken();
+        final String token = TokenUtil.createToken(userLogin);
+        userLogin.setToken(token);
+
+        return userLogin;
     }
 
 }
