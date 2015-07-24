@@ -38,7 +38,7 @@ public class PropertyIndexIT {
 
         propertySearcher.index(property);
 
-        Object res = propertySearcher.fetch(1);
+        //Object res = propertySearcher.fetch(1);
 
     }
 }

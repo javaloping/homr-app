@@ -1,13 +1,11 @@
 package com.javaloping.homr.app.security;
 
-import com.javaloping.homr.app.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -44,14 +42,14 @@ public class RestTokenProcessingFilter extends GenericFilterBean {
             try {
                 userDetails = userService.loadUserByUsername(username);
             } catch (Exception e) {
-                logger.debug("auth token contains user name - " + username
-                        + " - provided that does not (any longer) exist. Auth token was: " + authToken);
+                logger.debug(e);
                 chain.doFilter(request, response);
+
                 return;
             }
 
-            if (TokenUtil.validateToken(authToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+            if (isValidToken(authToken, userDetails)) {
+                final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -61,9 +59,13 @@ public class RestTokenProcessingFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
 
+    private boolean isValidToken(String authToken, UserDetails userDetails) {
+        return TokenUtil.validateToken(authToken, userDetails.getUsername(), userDetails.getPassword());
+    }
+
     private HttpServletRequest getAsHttpRequest(ServletRequest request) {
         if (!(request instanceof HttpServletRequest)) {
-            throw new RuntimeException("Expecting an HTTP request");
+            throw new IllegalStateException("Expecting an HTTP request");
         }
 
         return (HttpServletRequest) request;

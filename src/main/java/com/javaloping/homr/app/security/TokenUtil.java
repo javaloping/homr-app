@@ -1,6 +1,5 @@
 package com.javaloping.homr.app.security;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.codec.Hex;
 
 import java.security.MessageDigest;
@@ -10,10 +9,14 @@ import java.security.NoSuchAlgorithmException;
  * @author victormiranda@gmail.com
  */
 
-public class TokenUtil {
+public final class TokenUtil {
     public static final String X_AUTH_TOKEN = "X-Auth-Token";
 
     private static final String MAGIC_KEY = "h0m3rcmnnny34444!!d=-_+";
+
+    private TokenUtil() {
+        throw new UnsupportedOperationException("Token util is a util class");
+    }
 
     public static String getUsernameFromToken(String authToken) {
         if (authToken == null) {
@@ -22,14 +25,14 @@ public class TokenUtil {
         return authToken.split(":")[0];
     }
 
-    public static boolean validateToken(final String authToken, final UserDetails userDetails) {
+    public static boolean validateToken(final String authToken, final String username, final String password) {
         final String[] parts = authToken.split(":");
         final long expires = Long.parseLong(parts[1]);
 
         final String signature = parts[2];
 
         final String computedSign =
-                TokenUtil.computeSignature(userDetails.getUsername(), userDetails.getPassword(), expires);
+                TokenUtil.computeSignature(username, password, expires);
 
         return signature.equals(computedSign);
     }
@@ -45,7 +48,9 @@ public class TokenUtil {
         tokenBuilder.append(":");
         tokenBuilder.append(TokenUtil.computeSignature(userLogin.getUsername(), userLogin.getPassword(), expires));
 
-        return tokenBuilder.toString();
+        userLogin.setToken(tokenBuilder.toString());
+
+        return userLogin.getToken();
     }
 
     public static String computeSignature(final String username, final String password, final long expires) {
@@ -63,7 +68,7 @@ public class TokenUtil {
         try {
             digest = MessageDigest.getInstance("sha");
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("No sha algorithm available!");
+            throw new IllegalStateException("No sha algorithm available", e);
         }
 
         return new String(Hex.encode(digest.digest(signatureBuilder.toString().getBytes())));
