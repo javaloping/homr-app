@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+
+    <changeSet author="victor" id="basicdata-areas-1">
+
+        <insert tableName="areas">
+            <column name="id">1</column>
+            <column name="name">Dublin</column>
+        </insert>
+
+        <insert tableName="areas">
+            <column name="id">2</column>
+            <column name="name">Dundrum</column>
+            <column name="parentAreaId">1</column>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

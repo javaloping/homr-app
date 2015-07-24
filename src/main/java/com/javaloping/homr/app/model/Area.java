@@ -7,12 +7,17 @@ import javax.persistence.*;
  */
 
 @Entity
+@Table(name = "areas")
 public class Area {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
+
+    private Float latitude;
+
+    private Float longitude;
 
     @ManyToOne
     @JoinColumn(name = "parentAreaId")
@@ -36,6 +41,22 @@ public class Area {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Float latitude) {
+        this.latitude = latitude;
+    }
+
+    public Float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Float longitude) {
+        this.longitude = longitude;
     }
 
     public Area getParent() {

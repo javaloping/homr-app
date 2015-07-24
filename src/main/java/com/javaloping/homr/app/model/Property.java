@@ -11,6 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Inheritance
+@Table(name = "properties")
 @DiscriminatorColumn(name = "mode")
 public abstract class Property {
     @Id
@@ -37,6 +38,7 @@ public abstract class Property {
     @Embedded
     private Features features = new Features();
 
+    @Enumerated(EnumType.STRING)
     private PropertyType type;
 
     @Embedded

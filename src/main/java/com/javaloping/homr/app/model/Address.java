@@ -6,6 +6,7 @@ import javax.persistence.*;
  * @author victormiranda@gmail.com
  */
 @Entity
+@Table(name = "addresses")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,9 +16,9 @@ public class Address {
     @JoinColumn(name = "areaId")
     private Area area;
 
-    private Long latitude;
+    private Float latitude;
 
-    private Long longitude;
+    private Float longitude;
 
     public Integer getId() {
         return id;
@@ -35,19 +36,19 @@ public class Address {
         this.area = area;
     }
 
-    public Long getLatitude() {
+    public Float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Long latitude) {
+    public void setLatitude(Float latitude) {
         this.latitude = latitude;
     }
 
-    public Long getLongitude() {
+    public Float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Long longitude) {
+    public void setLongitude(Float longitude) {
         this.longitude = longitude;
     }
 }

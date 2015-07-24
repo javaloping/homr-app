@@ -85,8 +85,8 @@ public class PropertyDocumentTest {
         property.setFeatures(features);
 
         Address address = new Address();
-        address.setLatitude(234234l);
-        address.setLongitude(5345345l);
+        address.setLatitude(234234f);
+        address.setLongitude(5345345f);
         Area area = new Area();
         area.setId(45);
         address.setArea(area);

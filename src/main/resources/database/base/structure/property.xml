@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+
+    <changeSet author="victor" id="structure-property-1">
+
+        <createTable tableName="properties">
+
+            <column autoIncrement="true" name="id" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="mode" type="varchar(10)"/>
+
+            <column name="name" type="varchar(75)"/>
+            <column name="description" type="varchar(75)"/>
+
+            <column name="type" type="Varchar(20)"/>
+
+            <column name="publishedDate" type="DATE"/>
+
+            <column name="ownerId" type="INT(5)"/>
+            <column name="addressId" type="INT(5)"/>
+            <column name="price" type="Decimal(10,2)"/>
+
+            <column name="floor" type="INT(5)"/>
+            <column name="bathrooms" type="INT(2)"/>
+            <column name="bedrooms" type="INT(2)"/>
+            <column name="sqMeters" type="float"/>
+
+            <column name="lift" type="boolean"/>
+
+            <column name="createDate" type="DATE"/>
+            <column name="modifyDate" type="DATE"/>
+            <column name="modificationUserId" type="INT(5)"/>
+            <column name="creationUserId" type="INT(5)"/>
+
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
