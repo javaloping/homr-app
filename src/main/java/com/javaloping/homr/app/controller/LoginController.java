@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -21,13 +22,13 @@ public class LoginController extends BaseController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @RequestMapping(name = "/login")
-    public UserLogin login(@RequestBody UserLogin userLogin) {
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "Application/JSON")
+    public UserLogin login(final @RequestBody UserLogin userLogin) {
 
         final UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userLogin.getUsername(), userLogin.getPassword());
 
-        Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
+        final Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
