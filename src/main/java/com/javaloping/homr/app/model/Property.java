@@ -1,5 +1,7 @@
 package com.javaloping.homr.app.model;
 
+import com.javaloping.homr.app.type.AgeType;
+import com.javaloping.homr.app.type.EnergyCertificationType;
 import com.javaloping.homr.app.type.PropertyType;
 
 import javax.persistence.*;
@@ -13,7 +15,7 @@ import java.util.Date;
 @Inheritance
 @Table(name = "properties")
 @DiscriminatorColumn(name = "mode")
-public abstract class Property {
+public abstract class Property implements AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -40,6 +42,12 @@ public abstract class Property {
 
     @Enumerated(EnumType.STRING)
     private PropertyType type;
+
+    @Enumerated(EnumType.STRING)
+    private AgeType age;
+
+    @Enumerated(EnumType.STRING)
+    private EnergyCertificationType energyCertification;
 
     @Embedded
     private EntityModification entityModification;
@@ -116,6 +124,22 @@ public abstract class Property {
         this.type = type;
     }
 
+    public AgeType getAge() {
+        return age;
+    }
+
+    public void setAge(AgeType age) {
+        this.age = age;
+    }
+
+    public EnergyCertificationType getEnergyCertification() {
+        return energyCertification;
+    }
+
+    public void setEnergyCertification(EnergyCertificationType energyCertification) {
+        this.energyCertification = energyCertification;
+    }
+
     public EntityModification getEntityModification() {
         return entityModification;
     }
@@ -123,5 +147,4 @@ public abstract class Property {
     public void setEntityModification(EntityModification entityModification) {
         this.entityModification = entityModification;
     }
-
 }

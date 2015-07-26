@@ -34,6 +34,10 @@
 
             <column name="lift" type="boolean"/>
 
+            <column name="age" type="Varchar(20)"/>
+
+            <column name="energyCertification" type="Varchar(20)"/>
+
             <column name="createDate" type="DATE"/>
             <column name="modifyDate" type="DATE"/>
             <column name="modificationUserId" type="INT(5)"/>

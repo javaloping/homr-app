@@ -2,6 +2,7 @@ package com.javaloping.homr.app.controller;
 
 import com.javaloping.homr.app.security.TokenUtil;
 import com.javaloping.homr.app.security.UserLogin;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

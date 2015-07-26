@@ -1,8 +1,11 @@
 package com.javaloping.homr.app.security;
 
+import io.swagger.annotations.ApiModel;
+
 /**
  * @author victormiranda@gmail.com
  */
+@ApiModel(description = "Login bean")
 public class UserLogin {
     private String username;
     private String password;
